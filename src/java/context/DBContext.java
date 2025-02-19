@@ -20,7 +20,7 @@ public class DBContext {
         try {
             String url = "jdbc:sqlserver://localhost\\:1433;databaseName=PJ;encrypt=true;trustServerCertificate=true";
             String username = "sa";
-            String password = System.getenv("DB_PASSWORD");
+            String password = "123456";
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             connection = DriverManager.getConnection(url, username, password);
         } catch (ClassNotFoundException | SQLException ex) {
