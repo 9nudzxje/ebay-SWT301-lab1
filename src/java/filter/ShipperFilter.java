@@ -125,12 +125,9 @@ public class ShipperFilter implements Filter {
         Throwable problem = null;
         try {
             chain.doFilter(request, response);
-        } catch (Throwable t) {
-            // If an exception is thrown somewhere down the filter chain,
-            // we still want to execute our after processing, and then
-            // rethrow the problem after that.
-            problem = t;
-            t.printStackTrace();
+        } catch (Exception e) { // Catch only Exception, not Throwable
+            e.printStackTrace(); // Replace with a proper logging mechanism
+            problem = e; // Assign the caught exception to problem
         }
 
         doAfterProcessing(request, response);
