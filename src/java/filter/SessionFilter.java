@@ -116,8 +116,7 @@ public class SessionFilter implements Filter {
             httpResponse.sendRedirect("login");
             return;
         }
-        
-        
+
         Throwable problem = null;
         try {
             chain.doFilter(request, response);
@@ -192,7 +191,7 @@ public class SessionFilter implements Filter {
         return (sb.toString());
     }
 
-    private void sendProcessingError(Throwable t, ServletResponse response) {
+    private void sendProcessingError(Throwable t, ServletResponse response) throws ServletException {
         String stackTrace = getStackTrace(t);
 
         if (stackTrace != null && !stackTrace.equals("")) {
@@ -210,6 +209,7 @@ public class SessionFilter implements Filter {
                 ps.close();
                 response.getOutputStream().close();
             } catch (Exception ex) {
+                throw new ServletException("Lỗi trong SessionFilter", ex);
             }
         } else {
             try {
@@ -222,7 +222,7 @@ public class SessionFilter implements Filter {
         }
     }
 
-    public static String getStackTrace(Throwable t) {
+    public static String getStackTrace(Throwable t) throws ServletException {
         String stackTrace = null;
         try {
             StringWriter sw = new StringWriter();
@@ -232,6 +232,7 @@ public class SessionFilter implements Filter {
             sw.close();
             stackTrace = sw.getBuffer().toString();
         } catch (Exception ex) {
+            throw new ServletException("Lỗi trong SessionFilter", ex);
         }
         return stackTrace;
     }
