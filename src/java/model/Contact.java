@@ -22,8 +22,22 @@ public class Contact {
     private User responderUser;
     private User senderUser;
 
-    public Contact() {
+    public Contact(int id, String contactEmail, Date contactDate, Date replyDate, String contactContent, String replyContent, String status, User responderUser, User senderUser) {
+        this.id = id;
+        this.contactEmail = contactEmail;
+        this.contactDate = contactDate;
+        this.replyDate = replyDate;
+        this.contactContent = contactContent;
+        this.replyContent = replyContent;
+        this.status = status;
+        this.responderUser = responderUser;
+        this.senderUser = senderUser;
     }
+
+    public Contact() {
+        //khoi tao constructor
+    }    
+    
 
     public int getId() {
         return id;
