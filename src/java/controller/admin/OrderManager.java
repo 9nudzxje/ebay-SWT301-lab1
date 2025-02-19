@@ -11,7 +11,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.Date;
 import java.util.List;
 import model.Order;
 import model.User;
@@ -39,8 +38,6 @@ public class OrderManager extends HttpServlet {
         if (status == null) {
             status = "Pending";
         }
-        String fromDateStr = request.getParameter("date-from");
-        String toDateStr = request.getParameter("date-to");
         String pageParam = request.getParameter("page");
         OrderDAO odao = new OrderDAO();
         UserDAO udao = new UserDAO();
