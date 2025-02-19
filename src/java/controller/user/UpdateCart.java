@@ -55,15 +55,15 @@ public class UpdateCart extends HttpServlet {
         ProductDAO pdao = new ProductDAO();
         JSONObject json = new JSONObject();
         response.setContentType("application/json");
-
+        String success = "success";
         switch (action) {
             case "delete" -> {
                 try {
                     int deleteItemId = Integer.parseInt(itemIdStr);
                     cdao.deleteItem(deleteItemId);
-                    json.put("success", true);
+                    json.put(success, true);
                 } catch (NumberFormatException ex) {
-                    json.put("success", false);
+                    json.put(success, false);
                 }
             }
             case "change-quantity" -> {
@@ -75,17 +75,17 @@ public class UpdateCart extends HttpServlet {
                     // Điều chỉnh quantity nếu vượt quá số lượng tồn kho
                     if (currentStockUnits < quantity) {
                         quantity = currentStockUnits; // Đặt quantity về mức tồn kho thực tế
-                        json.put("success", false);
+                        json.put(success, false);
                         json.put("message", "Invalid product quantity due to exceeding warehouse unit");
                     } else {
-                        json.put("success", true);
+                        json.put(success, true);
                     }
 
                     // Lưu quantity đã điều chỉnh vào database
                     cdao.changeQuantity(quantity, userId, productId);
                     json.put("stockUnits", quantity); // Trả về quantity đã điều chỉnh
                 } catch (NumberFormatException ex) {
-                    json.put("success", false);
+                    json.put(success, false);
                 }
             }
 
@@ -93,7 +93,7 @@ public class UpdateCart extends HttpServlet {
                 int productId = Integer.parseInt(request.getParameter("productId"));
                 int isSelected = Integer.parseInt(request.getParameter("isSelected"));
                 cdao.changeSelected(isSelected, userId, productId);
-                json.put("success", true);
+                json.put(success, true);
             }
         }
         response.getWriter().write(json.toString());
