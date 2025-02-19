@@ -19,6 +19,7 @@ import java.util.Map;
 import model.Order;
 import model.OrderDetail;
 import model.Product;
+import model.User;
 
 /**
  *
@@ -176,8 +177,10 @@ public class OrderDAO extends DBContext {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, userId);
             ResultSet rs = st.executeQuery();
-
+            User customer = udao.getUserByID(userId);
+            User shipper = udao.getUserByID(rs.getInt("shipper_id"));
             while (rs.next()) {
+
                 Order order = new Order();
                 int orderId = rs.getInt("id");
                 order.setId(orderId);
@@ -189,8 +192,8 @@ public class OrderDAO extends DBContext {
                 order.setReceivedDate(rs.getTimestamp("received_date"));
                 order.setRecipientPhone(rs.getString("recipient_phone"));
                 order.setOrderStatus(rs.getString("order_status"));
-                order.setCustomer(udao.getUserByID(userId));
-                order.setShipper(udao.getUserByID(rs.getInt("shipper_id")));
+                order.setCustomer(customer);
+                order.setShipper(shipper);
                 order.setTotal(rs.getInt("total"));
                 List<OrderDetail> orderDetailList = getOrderDetailByOrderId(orderId);
                 order.setOrderDetailList(orderDetailList);
@@ -315,8 +318,8 @@ public class OrderDAO extends DBContext {
             for (OrderDetail orderDetail : orderDetailList) {
                 int sold = orderDetail.getQuantity();
                 int productId = orderDetail.getProduct().getId();
-                st.setInt(1, sold); 
-                st.setInt(2, sold); 
+                st.setInt(1, sold);
+                st.setInt(2, sold);
                 st.setInt(3, productId);
                 st.executeUpdate();
             }
@@ -452,7 +455,6 @@ public class OrderDAO extends DBContext {
         }
         return count;
     }
-
 
     public static void main(String[] args) {
         new OrderDAO().insertIntoIncome();
