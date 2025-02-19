@@ -129,7 +129,7 @@ public class ProductManager extends HttpServlet {
                 System.out.println("File not found: " + absoluteFilePath);
                 return false;
             }
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             e.printStackTrace();
             return false;
         }
